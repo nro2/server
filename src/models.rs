@@ -1,3 +1,6 @@
+use diesel::sql_types::Date;
+use diesel::sql_types::Bool;
+
 #[derive(Queryable)]
 pub struct Committee {
     pub committee_id: i32,
@@ -6,7 +9,7 @@ pub struct Committee {
 }
 
 #[derive(Queryable)]
-pub struct Committee_assignment {
+pub struct CommitteeAssignment {
     pub email: String,
     pub committee_id: i32,
     pub start_date: Date,
@@ -21,7 +24,7 @@ pub struct Department {
 }
 
 #[derive(Queryable)]
-pub struct Department_associations {
+pub struct DepartmentAssociations {
     pub email: String,
     pub department_id: i32,
 }
@@ -36,7 +39,7 @@ pub struct Faculty {
 }
 
 #[derive(Queryable)]
-pub struct Survey_choice {
+pub struct SurveyChoice {
     pub choice_id: i32,
     pub survey_date: Date,
     pub email: String,
@@ -44,7 +47,7 @@ pub struct Survey_choice {
 }
 
 #[derive(Queryable)]
-pub struct Survey_data {
+pub struct SurveyData {
     pub survey_date: Date,
     pub email: String,
     pub is_interested: Bool,

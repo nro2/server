@@ -1,8 +1,7 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
-#[macro_use] 
+#[macro_use] extern crate diesel;
 extern crate rocket;
-extern crate diesel;
 extern crate dotenv;
 
 use rocket::http::RawStr;
@@ -12,9 +11,11 @@ use std::env;
 use self::models::*;
 use self::diesel::relude::*;
 
-
 use models::SpreeProduct;
 use schema::spree_products::dsl::*;
+
+mod schema;
+mod models;
 
 #[get("/")]
 fn index() -> &'static str {
