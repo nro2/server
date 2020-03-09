@@ -1,8 +1,20 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
-#[macro_use] extern crate rocket;
+#[macro_use] 
+extern crate rocket;
+extern crate diesel;
+extern crate dotenv;
 
 use rocket::http::RawStr;
+use diesel::pg::PgConnection;
+use dotenv::dotenv;
+use std::env;
+use self::models::*;
+use self::diesel::relude::*;
+
+
+use models::SpreeProduct;
+use schema::spree_products::dsl::*;
 
 #[get("/")]
 fn index() -> &'static str {
