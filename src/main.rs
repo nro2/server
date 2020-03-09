@@ -15,6 +15,7 @@ use self::diesel::prelude::*;
 pub mod schema;
 pub mod models;
 
+
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"

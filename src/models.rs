@@ -4,6 +4,8 @@
 #![allow(clippy::all)]
 
 use chrono::NaiveDate;
+use crate::schema::*;
+
 
 #[derive(Queryable, Debug, Identifiable)]
 #[primary_key(committee_id)]
