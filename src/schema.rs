@@ -1,5 +1,5 @@
 table! {
-    committees (committee_id) {
+    committee (committee_id) {
         committee_id -> Int4,
         name -> Varchar,
         description -> Nullable<Varchar>,
@@ -7,7 +7,7 @@ table! {
 }
 
 table! {
-    committee_assignments (email, committee_id) {
+    committee_assignment (email, committee_id) {
         email -> Varchar,
         committee_id -> Int4,
         start_date -> Nullable<Date>,
@@ -16,7 +16,7 @@ table! {
 }
 
 table! {
-    departments (department_id) {
+    department (department_id) {
         department_id -> Int4,
         name -> Varchar,
         description -> Nullable<Varchar>,
@@ -24,14 +24,14 @@ table! {
 }
 
 table! {
-    department_associations (email, department_id) {
+    department_association (email, department_id) {
         email -> Varchar,
         department_id -> Int4,
     }
 }
 
 table! {
-    facultys (email) {
+    faculty (email) {
         faculty_id -> Int4,
         full_name -> Varchar,
         email -> Varchar,
@@ -41,7 +41,7 @@ table! {
 }
 
 table! {
-    survey_choices (choice_id, email, survey_date, committee_id) {
+    survey_choice (choice_id, email, survey_date, committee_id) {
         choice_id -> Int4,
         survey_date -> Date,
         email -> Varchar,
@@ -50,7 +50,7 @@ table! {
 }
 
 table! {
-    survey_datas (survey_date, email) {
+    survey_data (survey_date, email) {
         survey_date -> Date,
         email -> Varchar,
         is_interested -> Bool,
@@ -58,20 +58,20 @@ table! {
     }
 }
 
-joinable!(committee_assignments -> committees (committee_id));
-joinable!(committee_assignments -> facultys (email));
-joinable!(department_associations -> departments (department_id));
-joinable!(department_associations -> facultys (email));
-joinable!(survey_choices -> committees (committee_id));
-joinable!(survey_choices -> facultys (email));
-joinable!(survey_datas -> facultys (email));
+joinable!(committee_assignment -> committee (committee_id));
+joinable!(committee_assignment -> faculty (email));
+joinable!(department_association -> department (department_id));
+joinable!(department_association -> faculty (email));
+joinable!(survey_choice -> committee (committee_id));
+joinable!(survey_choice -> faculty (email));
+joinable!(survey_data -> faculty (email));
 
 allow_tables_to_appear_in_same_query!(
-    committees,
-    committee_assignments,
-    departments,
-    department_associations,
-    facultys,
-    survey_choices,
-    survey_datas,
+    committee,
+    committee_assignment,
+    department,
+    department_association,
+    faculty,
+    survey_choice,
+    survey_data,
 );

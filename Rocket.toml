@@ -1,0 +1,2 @@
+[global.databases]
+coc={url="postgres://coc:pwd123@localhost:54320/coc"}
