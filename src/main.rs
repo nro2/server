@@ -30,7 +30,9 @@ fn rocket() -> rocket::Rocket {
         .mount("/", routes![
             routes::index,
             routes::get_committees,
-            routes::get_faculty])
+            routes::get_faculty,
+            routes::get_faculty_by_email,
+            routes::get_committee_by_id])
         .attach(DbConn::fairing())
 }
 
