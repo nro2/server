@@ -1,8 +1,12 @@
 # Server
 
 Dependencies:
-Diesel
-Rocket
+
+* Diesel
+
+* Rocket
+
+
 
 Getting started:
 
