@@ -2,7 +2,6 @@
 
 #[macro_use] extern crate diesel;
 #[macro_use] extern crate rocket;
-extern crate dotenv;
 extern crate chrono;
 #[macro_use] extern crate rocket_contrib;
 extern crate serde;
@@ -10,14 +9,6 @@ extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
 
-use rocket::http::RawStr;
-use diesel::pg::PgConnection;
-use dotenv::dotenv;
-use std::env;
-use self::models::*;
-use self::diesel::prelude::*;
-
-//pub mod cors;
 pub mod schema;
 pub mod models;
 pub mod routes;
@@ -30,9 +21,12 @@ fn rocket() -> rocket::Rocket {
         .mount("/", routes![
             routes::index,
             routes::get_committees,
+            routes::post_committee,
             routes::get_faculty,
             routes::get_faculty_by_email,
-            routes::get_committee_by_id])
+            routes::get_committee_by_id,
+            routes::get_department,
+            routes::get_department_by_id])
         .attach(DbConn::fairing())
 }
 

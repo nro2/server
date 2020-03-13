@@ -74,3 +74,10 @@ pub struct SurveyData {
     pub expertise: Option<String>,
 }
 
+#[derive(Deserialize, Insertable)]
+#[table_name="committee"]
+pub struct InsertCommittee {
+    pub name: String,
+    pub description: Option<String>,
+}
+

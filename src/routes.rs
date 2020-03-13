@@ -33,6 +33,22 @@ pub fn get_committee_by_id(conn: DbConn, id: i32) -> Result<Json<Vec<Committee>>
     }).map(Json)
 }
 
+#[post("/committees", data = "<ins_comm>")]
+pub fn post_committee(
+    conn: DbConn,
+    ins_comm: Json<InsertCommittee>,
+) -> Result<String, String> {
+    let inserted_rows = diesel::insert_into(schema::committee::table)
+        .values(&ins_comm.0)
+        .execute(&conn.0)
+        .map_err(|err| -> String {
+            println!("Error inserting row: {:?}", err);
+            "Error inserting row into database".into()
+        })?;
+
+    Ok(format!("Inserted {} row(s).", inserted_rows))
+}
+
 #[get("/faculty")]
 pub fn get_faculty(conn: DbConn) -> Result<Json<Vec<Faculty>>, String> {
         use crate::schema::faculty::dsl::*;
@@ -43,14 +59,38 @@ pub fn get_faculty(conn: DbConn) -> Result<Json<Vec<Faculty>>, String> {
     }).map(Json)
 }
 
-#[get("/faculty/<email>")]
-pub fn get_faculty_by_email(conn: DbConn, email: String) -> Result<Json<Vec<Faculty>>, String> {
+
+#[get("/faculty/<qemail>")]
+pub fn get_faculty_by_email(conn: DbConn, qemail: String) -> Result<Json<Vec<Faculty>>, String> {
         use crate::schema::faculty::dsl::*;
 
     faculty
-        .filter(email.eq(email))
+        .filter(email.eq(qemail))
         .load(&conn.0).map_err(|err| -> String {
         println!("Error getting faculty: {:?}", err);
         "Error querying page views from the database".into()
     }).map(Json)
 }
+
+#[get("/department")]
+pub fn get_department(conn: DbConn) -> Result<Json<Vec<Department>>, String> {
+        use crate::schema::department::dsl::*;
+
+    department.load(&conn.0).map_err(|err| -> String {
+        println!("Error getting department: {:?}", err);
+        "Error querying page views from the database".into()
+    }).map(Json)
+}
+
+#[get("/department/<id>")] 
+pub fn get_department_by_id(conn: DbConn, id: i32) -> Result<Json<Vec<Department>>, String> {
+        use crate::schema::department::dsl::*;
+    let _id = 25;
+    department
+        .filter(department_id.eq(id))
+        .load(&conn.0).map_err(|err| -> String {
+        println!("Error getting department: {:?}", err);
+        "Error querying page views from the database".into()
+    }).map(Json)
+}
+
