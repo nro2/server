@@ -21,10 +21,11 @@ fn rocket() -> rocket::Rocket {
         .mount("/", routes![
             routes::index,
             routes::get_committees,
+            routes::get_committee_by_id,
             routes::post_committee,
             routes::get_faculty,
             routes::get_faculty_by_email,
-            routes::get_committee_by_id,
+            routes::post_faculty,
             routes::get_department,
             routes::get_department_by_id])
         .attach(DbConn::fairing())

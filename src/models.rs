@@ -77,7 +77,17 @@ pub struct SurveyData {
 #[derive(Deserialize, Insertable)]
 #[table_name="committee"]
 pub struct InsertCommittee {
+    pub committee_id: i32,
     pub name: String,
     pub description: Option<String>,
 }
 
+#[derive(Deserialize, Insertable)]
+#[table_name="faculty"]
+pub struct InsertFaculty {
+    pub faculty_id: i32,
+    pub full_name: String,
+    pub email: String,
+    pub job_title: Option<String>,
+    pub senate_division: String,
+}

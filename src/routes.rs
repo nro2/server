@@ -72,6 +72,22 @@ pub fn get_faculty_by_email(conn: DbConn, qemail: String) -> Result<Json<Vec<Fac
     }).map(Json)
 }
 
+#[post("/faculty", data = "<ins_fac>")]
+pub fn post_faculty(
+    conn: DbConn,
+    ins_fac: Json<InsertFaculty>,
+) -> Result<String, String> {
+    let inserted_rows = diesel::insert_into(schema::faculty::table)
+        .values(&ins_fac.0)
+        .execute(&conn.0)
+        .map_err(|err| -> String {
+            println!("Error inserting row: {:?}", err);
+            "Error inserting row into database".into()
+        })?;
+
+    Ok(format!("Inserted {} row(s).", inserted_rows))
+}
+
 #[get("/department")]
 pub fn get_department(conn: DbConn) -> Result<Json<Vec<Department>>, String> {
         use crate::schema::department::dsl::*;
