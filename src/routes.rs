@@ -12,7 +12,9 @@ pub fn index() -> &'static str {
 }
 
 #[get("/committees")]
-pub fn get_committees(conn: DbConn) -> Result<Json<Vec<Committee>>, String> {
+pub fn get_committees(
+    conn: DbConn
+) -> Result<Json<Vec<Committee>>, String> {
         use crate::schema::committee::dsl::*;
 
     committee.load(&conn.0).map_err(|err| -> String {
@@ -22,9 +24,11 @@ pub fn get_committees(conn: DbConn) -> Result<Json<Vec<Committee>>, String> {
 }
 
 #[get("/committees/<id>")] 
-pub fn get_committee_by_id(conn: DbConn, id: i32) -> Result<Json<Vec<Committee>>, String> {
+pub fn get_committee_by_id(
+    conn: DbConn, 
+    id: i32
+) -> Result<Json<Vec<Committee>>, String> {
         use crate::schema::committee::dsl::*;
-    let _id = 25;
     committee
         .filter(committee_id.eq(id))
         .load(&conn.0).map_err(|err| -> String {
@@ -49,8 +53,27 @@ pub fn post_committee(
     Ok(format!("Inserted {} row(s).", inserted_rows))
 }
 
+#[delete("/committees/<id>")]
+pub fn delete_committee(
+    conn: DbConn,
+    id: i32,
+) -> Result<String, String> {
+    use crate::schema::committee::dsl::*;
+    let deleted_rows = diesel::delete(schema::committee::table)
+        .filter(committee_id.eq(id))
+        .execute(&conn.0)
+        .map_err(|err| -> String {
+            println!("Error deleting committee: {:?}", err);
+            "Error committee row from database".into()
+        })?;
+
+    Ok(format!("Deleted {} row(s).", deleted_rows))
+}
+
 #[get("/faculty")]
-pub fn get_faculty(conn: DbConn) -> Result<Json<Vec<Faculty>>, String> {
+pub fn get_faculty(
+    conn: DbConn
+) -> Result<Json<Vec<Faculty>>, String> {
         use crate::schema::faculty::dsl::*;
 
     faculty.load(&conn.0).map_err(|err| -> String {
@@ -61,7 +84,10 @@ pub fn get_faculty(conn: DbConn) -> Result<Json<Vec<Faculty>>, String> {
 
 
 #[get("/faculty/<qemail>")]
-pub fn get_faculty_by_email(conn: DbConn, qemail: String) -> Result<Json<Vec<Faculty>>, String> {
+pub fn get_faculty_by_email(
+    conn: DbConn, 
+    qemail: String
+) -> Result<Json<Vec<Faculty>>, String> {
         use crate::schema::faculty::dsl::*;
 
     faculty
@@ -88,6 +114,23 @@ pub fn post_faculty(
     Ok(format!("Inserted {} row(s).", inserted_rows))
 }
 
+#[delete("/faculty/<qemail>")]
+pub fn delete_faculty(
+    conn: DbConn,
+    qemail: String,
+) -> Result<String, String> {
+    use crate::schema::faculty::dsl::*;
+    let deleted_rows = diesel::delete(schema::faculty::table)
+        .filter(email.eq(qemail))
+        .execute(&conn.0)
+        .map_err(|err| -> String {
+            println!("Error deleting faculty: {:?}", err);
+            "Error deleting faculty from database".into()
+        })?;
+
+    Ok(format!("Deleted {} row(s).", deleted_rows))
+}
+
 #[get("/department")]
 pub fn get_department(conn: DbConn) -> Result<Json<Vec<Department>>, String> {
         use crate::schema::department::dsl::*;
@@ -99,7 +142,10 @@ pub fn get_department(conn: DbConn) -> Result<Json<Vec<Department>>, String> {
 }
 
 #[get("/department/<id>")] 
-pub fn get_department_by_id(conn: DbConn, id: i32) -> Result<Json<Vec<Department>>, String> {
+pub fn get_department_by_id(
+    conn: DbConn, 
+    id: i32
+) -> Result<Json<Vec<Department>>, String> {
         use crate::schema::department::dsl::*;
     let _id = 25;
     department
@@ -110,3 +156,35 @@ pub fn get_department_by_id(conn: DbConn, id: i32) -> Result<Json<Vec<Department
     }).map(Json)
 }
 
+#[post("/department", data = "<ins_dep>")]
+pub fn post_department(
+    conn: DbConn,
+    ins_dep: Json<InsertDepartment>,
+) -> Result<String, String> {
+    let inserted_rows = diesel::insert_into(schema::department::table)
+        .values(&ins_dep.0)
+        .execute(&conn.0)
+        .map_err(|err| -> String {
+            println!("Error inserting row: {:?}", err);
+            "Error inserting row into database".into()
+        })?;
+
+    Ok(format!("Inserted {} row(s).", inserted_rows))
+}
+
+#[delete("/department/<id>")]
+pub fn delete_department(
+    conn: DbConn,
+    id: i32,
+) -> Result<String, String> {
+    use crate::schema::department::dsl::*;
+    let deleted_rows = diesel::delete(schema::department::table)
+        .filter(department_id.eq(id))
+        .execute(&conn.0)
+        .map_err(|err| -> String {
+            println!("Error deleting department: {:?}", err);
+            "Error deleting department from database".into()
+        })?;
+
+    Ok(format!("Deleted {} row(s).", deleted_rows))
+}

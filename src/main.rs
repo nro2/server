@@ -23,11 +23,15 @@ fn rocket() -> rocket::Rocket {
             routes::get_committees,
             routes::get_committee_by_id,
             routes::post_committee,
+            routes::delete_committee,
             routes::get_faculty,
             routes::get_faculty_by_email,
             routes::post_faculty,
+            routes::delete_faculty,
             routes::get_department,
-            routes::get_department_by_id])
+            routes::get_department_by_id,
+            routes::post_department,
+            routes::delete_department])
         .attach(DbConn::fairing())
 }
 

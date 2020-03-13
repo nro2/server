@@ -91,3 +91,11 @@ pub struct InsertFaculty {
     pub job_title: Option<String>,
     pub senate_division: String,
 }
+
+#[derive(Deserialize, Insertable)]
+#[table_name="department"]
+pub struct InsertDepartment {
+    pub department_id: i32,
+    pub name: String,
+    pub description: Option<String>,
+}
